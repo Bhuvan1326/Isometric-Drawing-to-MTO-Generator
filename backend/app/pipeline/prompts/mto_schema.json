@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MaterialTakeOff",
+  "description": "Structured Material Take-Off extracted from a piping isometric drawing.",
+  "type": "object",
+  "required": ["drawing_meta", "items", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "drawing_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "drawing_no": { "type": ["string", "null"] },
+        "revision": { "type": ["string", "null"] },
+        "line_number": { "type": ["string", "null"] },
+        "nps": { "type": ["string", "null"] },
+        "material_class": { "type": ["string", "null"] },
+        "service": { "type": ["string", "null"] }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item_no",
+          "category",
+          "description",
+          "quantity",
+          "unit"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "item_no": { "type": "integer", "minimum": 1 },
+          "category": {
+            "type": "string",
+            "enum": ["PIPE", "FITTING", "FLANGE", "VALVE", "GASKET", "BOLT", "SUPPORT"]
+          },
+          "description": { "type": "string", "minLength": 1 },
+          "size_nps": { "type": ["string", "null"] },
+          "schedule_rating": { "type": ["string", "null"] },
+          "material_spec": { "type": ["string", "null"] },
+          "end_type": {
+            "type": ["string", "null"],
+            "enum": ["BW", "SW", "THD", "FLGD", null]
+          },
+          "quantity": { "type": "number", "minimum": 0 },
+          "unit": {
+            "type": "string",
+            "enum": ["M", "EA", "NO", "SET"]
+          },
+          "length_m": { "type": ["number", "null"], "minimum": 0 },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "remarks": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "total_pipe_length_m": { "type": "number", "minimum": 0 },
+        "fittings": { "type": "integer", "minimum": 0 },
+        "flanges": { "type": "integer", "minimum": 0 },
+        "valves": { "type": "integer", "minimum": 0 },
+        "gaskets": { "type": "integer", "minimum": 0 },
+        "bolt_sets": { "type": "integer", "minimum": 0 },
+        "field_welds": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
